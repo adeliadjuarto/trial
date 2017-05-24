@@ -1,4 +1,4 @@
 *.hash
 build/
-/.idea/vcs.xml
+vcs.xml
 gradle/
