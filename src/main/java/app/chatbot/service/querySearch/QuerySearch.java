@@ -61,10 +61,10 @@ public class QuerySearch {
         vectorizer.vectorize(query);
         Vector queryVector = vectorizer.getResult();
 
-        return Integer.parseInt(indexSearchResult(iterable, queryVector));
+        return Integer.parseInt(searchAll(iterable, queryVector));
     }
 
-    public String indexSearchResult(SequenceFileIterable<Writable, VectorWritable> iterable, Vector source){
+    public String searchAll(SequenceFileIterable<Writable, VectorWritable> iterable, Vector source){
         for (Pair<Writable, VectorWritable> pair : iterable) {
             Vector y = pair.getSecond().get();
             String x = pair.getFirst().toString();
@@ -93,6 +93,51 @@ public class QuerySearch {
             return "Not Found";
 
         return docIndex.get(selectedIndex);
+    }
+
+    public Integer searchSpecific(String query, Integer subcategoryIndex) throws Exception{
+        SequenceFileIterable<Writable, VectorWritable> iterable = new SequenceFileIterable<> (
+                new Path(tfidfPath + "/tfidf-vectors/part-r-00000"), new Configuration());
+
+
+        vectorizer.vectorize(query);
+        Vector queryVector = vectorizer.getResult();
+
+        return Integer.parseInt(searchFromSubcategory(iterable, queryVector, subcategoryIndex));
+    }
+
+    public String searchFromSubcategory(SequenceFileIterable<Writable, VectorWritable> iterable, Vector source, Integer subcategoryIndex){
+        for (Pair<Writable, VectorWritable> pair : iterable) {
+            Vector y = pair.getSecond().get();
+            String x = pair.getFirst().toString();
+
+            result.add(y);
+            docIndex.add(x);
+        }
+
+        double maxScore = 0.0;
+        int selectedIndex = -1;
+
+        int startIndex = contentRepository.findFirstBySubcategoryId(subcategoryIndex).getId();
+        int endIndex = contentRepository.findFirstBySubcategoryIdOrderByIdDesc(subcategoryIndex).getId();
+
+        for(int i = startIndex; i <= endIndex; i++) {
+            double docScore;
+
+            docScore = source.dot(result.get(docIndex.indexOf(i))) /
+                    (Math.sqrt(source.getLengthSquared()) *
+                            Math.sqrt(result.get(docIndex.indexOf(i)).getLengthSquared()));
+
+            if(docScore > maxScore) {
+                maxScore = docScore;
+                selectedIndex = docIndex.indexOf(i);
+            }
+        }
+
+//        if(selectedIndex == -1)
+//            return "Not Found";
+        return docIndex.get(23);
+//        return docIndex.get(selectedIndex);
     }
 
     private void loadStemmedDocumentsTo(List<String> documents) throws Exception {

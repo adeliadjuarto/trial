@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ContentRepository extends JpaRepository<Content, Integer> {
 
     Content findFirstByOriginal(String original);
+    Content findFirstBySubcategoryId(Integer index);
+    Content findFirstBySubcategoryIdOrderByIdDesc(Integer index);
 
     boolean existsByOriginal(String original);
 }
