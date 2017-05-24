@@ -44,7 +44,7 @@ public class ResponseController{
     public Message response() throws Exception{
 
         System.out.println(categoryRepository.toString());
-        fileParse.parse("./skbca.txt");
+        fileParse.parse("./assets/skbca.txt");
 
         return new Message("Hi", "Hai juga");
     }
