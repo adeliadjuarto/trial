@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 /**
  * Created by willemchua on 5/10/17.
  */
@@ -26,7 +27,7 @@ public class ResponseController{
 
     @RequestMapping(value = "/chat",
                     method = RequestMethod.POST)
-    public Message response(
+    public ArrayList<Message> response(
             @RequestBody JsonNode json
             ) throws Exception{
         String body = json.get("body").asText();
@@ -34,17 +35,17 @@ public class ResponseController{
 
         chatService.chat(body, from);
 
-        String title = chatService.searchResultTitle;
-        String content = chatService.searchResultContent;
+//        String title = chatService.searchResultTitle;
+//        String content = chatService.searchResultContent;
 
-        return new Message(title, content);
+        return chatService.messages;
     }
 
     @RequestMapping("/start")
     public Message response() throws Exception{
 
         System.out.println(categoryRepository.toString());
-        fileParse.parse("./skbca.txt");
+        fileParse.parse("./assets/skbca.txt");
 
         return new Message("Hi", "Hai juga");
     }

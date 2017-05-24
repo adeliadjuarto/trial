@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 /**
  * Created by willemchua on 5/22/17.
  */
@@ -19,14 +20,14 @@ public class ChatService {
     public String searchResultContent;
     private Integer resultIndex;
 
+    public ArrayList<Message> messages;
+
     @Autowired
         private CategoryRepository categoryRepository;
     @Autowired
         private ContentRepository contentRepository;
     @Autowired
         private QuerySearch querySearch;
-
-    Integer chatContext = 0;
 
     Map <String, Integer> context = new HashMap<String, Integer>();
 
@@ -37,6 +38,8 @@ public class ChatService {
     String CONTENT_NOT_FOUND = "Sorry, but we still can't understand what you're looking for. Let's try this again. Say \"Hi\".";
 
     public void chat(String query, String from) throws Exception {
+        messages = new ArrayList<>();
+
         if(!context.containsKey(from)){
             context.put(from, 0);
         }
@@ -49,6 +52,8 @@ public class ChatService {
             levelTwo(query, from);
         else if(context.get(from) == 3)
             levelThree(query, from);
+        else if(context.get(from) == 4)
+            levelFour(query, from);
     }
 
     public void levelZero(String query, String from) throws Exception {
@@ -67,6 +72,8 @@ public class ChatService {
         }
         else
             resetChat(from);
+
+        messages.add(new Message(searchResultTitle, searchResultContent));
     }
 
     public void levelOne(String query, String from) throws Exception {
@@ -83,6 +90,8 @@ public class ChatService {
         }
         else
             resetChat(from);
+
+        messages.add(new Message(searchResultTitle, searchResultContent));
     }
 
 
@@ -95,6 +104,8 @@ public class ChatService {
         }
         else
             resetChat(from);
+
+        messages.add(new Message(searchResultTitle, searchResultContent));
     }
 
     public void levelThree(String query, String from) throws Exception {
@@ -113,10 +124,29 @@ public class ChatService {
                 searchResultContent += " that might be of interest.\n";
                 searchResultContent += contentRepository.findOne(resultIndex).getOriginal();
             }
-            reChat(from);
+
+            context.put(from, 4);
         }
         else
             resetChat(from);
+
+        messages.add(new Message(searchResultTitle, searchResultContent));
+        messages.add(new Message("Question", "Do you want to ask another question? [Yes/No]"));
+    }
+
+    public void levelFour(String query, String from) throws Exception {
+        if(query.equals("Yes")) {
+            context.put(from, 3);
+            searchResultTitle = "Query Search";
+            searchResultContent = "Enter your query in " + getSubcategoryValue(subcategoryIndex) + " category";
+        }else if(query.equals("No")) {
+            reChat(from);
+            searchResultTitle = "Reply";
+            searchResultContent = "Thank you for using";
+        }else
+            resetChat(from);
+
+        messages.add(new Message(searchResultTitle, searchResultContent));
     }
 
     private void reChat(String from) {
