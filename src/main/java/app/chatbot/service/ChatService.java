@@ -124,31 +124,29 @@ public class ChatService {
     }
 
     private boolean isCategory(String query) throws Exception {
-        if(!categoryRepository.existsByName(query))
+        if(categoryRepository.findFirstByNameAndParentId(query, 0) == null)
             return false;
-
-        Integer parentId = categoryRepository.findFirstByName(query).getParentId();
-        if(parentId != 0){
-            return false;
-        }
 
         return true;
     }
 
-    private boolean isSubcategory(String query, Integer index) throws Exception {
-        if(!categoryRepository.existsByName(query))
+    private boolean isSubcategory(String query, Integer categoryIndex) throws Exception {
+        if(categoryRepository.findFirstByNameAndParentId(query, categoryIndex) == null)
             return false;
-
-        Integer parentId = categoryRepository.findFirstByName(query).getParentId();
-        if(parentId == 0){
-            return false;
-        }
 
         return true;
     }
 
     private Integer getCategoryIndex(String query) {
-        return categoryRepository.findFirstByName(query).getId();
+        return categoryRepository.findFirstByNameAndParentId(query, 0).getId();
+    }
+
+    private Integer getSubcategoryIndex(String query, Integer categoryIndex) {
+        Category category = categoryRepository.findFirstByNameAndParentId(query, categoryIndex);
+        if(category != null){
+            return category.getId();
+        }
+        return -1;
     }
 
     private String getCategoryValue(Integer index) {
@@ -160,16 +158,10 @@ public class ChatService {
     }
 
     public Integer getSubcategoryByContentIndex(Integer contentIndex) throws Exception {
-        return contentRepository.findOne(contentIndex).getId();
+        return contentRepository.findOne(contentIndex).getSubcategory_id();
     }
 
-    private Integer getSubcategoryIndex(String query, Integer categoryIndex) {
-        Category category = categoryRepository.findFirstByNameAndParentId(query, categoryIndex);
-        if(category != null){
-            return category.getId();
-        }
-        return -1;
-    }
+
 
 
     public void resetChat(String from) throws Exception {
