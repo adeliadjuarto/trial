@@ -32,7 +32,7 @@ public class QuerySearch {
     private List<String> stemmedDocuments = new ArrayList<>();
 
     private Path tfidfPath = new Path("output/service");
-    private String docPath = "./skbca.txt";
+    private String docPath = "./assets/skbca.txt";
 
     @Autowired
     private ContentRepository contentRepository;

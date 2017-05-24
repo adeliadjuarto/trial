@@ -16,7 +16,7 @@ public class Lemmatizer {
 
     public Lemmatizer() throws Exception{
         Set<String> dictionary = new HashSet<>();
-        InputStream in = this.getClass().getResourceAsStream("/root-words.txt");
+        InputStream in = this.getClass().getResourceAsStream("/assets/root-words.txt");
 
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
@@ -32,7 +32,7 @@ public class Lemmatizer {
 
         lemmatizer = new DefaultLemmatizer(dictionary);
 
-        br = new BufferedReader(new FileReader("./stopwords.txt"));
+        br = new BufferedReader(new FileReader("./assets/stopwords.txt"));
 
         while(br.ready()) {
             stopWords.add(br.readLine());
