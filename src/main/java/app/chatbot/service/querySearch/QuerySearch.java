@@ -125,7 +125,6 @@ public class QuerySearch {
                 result.add(y);
                 docIndex.add(index);
             }
-
         }
 
         double maxScore = 0.0;
@@ -133,10 +132,6 @@ public class QuerySearch {
 
         for(int i = 0; i < result.size(); i++) {
             double docScore;
-
-            System.out.println(result.get(i));
-            System.out.println(docIndex.get(i));
-            System.out.println(i);
 
             docScore = queryVector.dot(result.get(i)) /
                     (Math.sqrt(queryVector.getLengthSquared()) *
