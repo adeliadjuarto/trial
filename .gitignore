@@ -1,2 +1,4 @@
 *.hash
 build/
+/.idea/vcs.xml
+gradle/
