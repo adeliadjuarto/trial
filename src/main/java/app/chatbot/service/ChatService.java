@@ -18,7 +18,7 @@ public class ChatService {
 
     public String searchResultTitle;
     public String searchResultContent;
-    private Integer resultIndex;
+    private ArrayList<Integer> resultIndex = new ArrayList<>();
     private Integer resultIndexFromSubcategory;
 
     public ArrayList<Message> messages;
@@ -113,23 +113,23 @@ public class ChatService {
         resultIndex = querySearch.searchAll(query);
         resultIndexFromSubcategory = querySearch.searchSpecific(query, subcategoryIndex);
 
-        if(resultIndex != -1) {
+        if(resultIndex != null) {
             searchResultTitle = "Search Result";
-            Integer resultSubcategoryIndex = getSubcategoryByContentIndex(resultIndex);
+            Integer resultSubcategoryIndex;
 
-            if(resultSubcategoryIndex == subcategoryIndex)
-                searchResultContent = contentRepository.findOne(resultIndex).getOriginal();
-            else {
-                searchResultTitle = "Search Result From its Subcategory";
-                searchResultContent = contentRepository.findOne(resultIndexFromSubcategory).getOriginal();
-                messages.add(new Message(searchResultTitle, searchResultContent));
+            searchResultTitle = "Search Result From its Subcategory";
+            searchResultContent = contentRepository.findOne(resultIndexFromSubcategory).getOriginal();
+            messages.add(new Message(searchResultTitle, searchResultContent));
 
+            for (Integer resIndex: resultIndex) {
+                resultSubcategoryIndex  = getSubcategoryByContentIndex(resIndex);
                 searchResultTitle = "Search Result From All Document";
                 searchResultContent = "We don't find the best match of what you're looking for at " + getSubcategoryValue(subcategoryIndex);
                 searchResultContent += " However, we found a document on " + getSubcategoryValue(resultSubcategoryIndex);
                 searchResultContent += " on the category " + getCategoryValue(categoryRepository.findOne(resultSubcategoryIndex).getParentId());
                 searchResultContent += " that might be of interest.\n";
-                searchResultContent += contentRepository.findOne(resultIndex).getOriginal();
+                searchResultContent += contentRepository.findOne(resIndex).getOriginal();
+                messages.add(new Message(searchResultTitle, searchResultContent));
             }
 
             context.put(from, 4);
@@ -137,7 +137,7 @@ public class ChatService {
         else
             resetChat(from);
 
-        messages.add(new Message(searchResultTitle, searchResultContent));
+
         messages.add(new Message("Question", "Do you want to ask another question? [Yes/No]"));
     }
 

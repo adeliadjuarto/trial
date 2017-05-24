@@ -10,11 +10,12 @@ import org.apache.mahout.common.iterator.sequencefile.SequenceFileIterable;
 import org.apache.mahout.math.*;
 import org.apache.hadoop.io.Writable;
 import org.apache.mahout.common.Pair;
+import org.apache.mahout.math.Vector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * Created by willemchua on 03/05/17.
@@ -62,12 +63,14 @@ public class QuerySearch {
 
     }
 
-    public Integer searchAll(String query) throws Exception{
+    public ArrayList<Integer> searchAll(String query) throws Exception{
 
         prepare();
 
         result = new ArrayList<>();
         docIndex = new ArrayList<>();
+        ArrayList<Double> docScores = new ArrayList<>();
+        ArrayList<Integer> highestDocIndexes = new ArrayList<>();
 
         for (Pair<Writable, VectorWritable> pair : iterable) {
             Vector y = pair.getSecond().get();
@@ -80,26 +83,28 @@ public class QuerySearch {
         vectorizer.vectorize(query);
         Vector queryVector = vectorizer.getResult();
 
-        double maxScore = 0.0;
         int selectedIndex = -1;
 
         for(int i = 0; i< result.size(); i++) {
-            double docScore;
+            double score;
 
-            docScore = queryVector.dot(result.get(i)) /
+            score = queryVector.dot(result.get(i)) /
                     (Math.sqrt(queryVector.getLengthSquared()) *
                             Math.sqrt(result.get(i).getLengthSquared()));
+            docScores.add(score);
+        }
 
-            if(docScore > maxScore) {
-                maxScore = docScore;
-                selectedIndex = i;
-            }
+        //tambah sorting disini
+
+
+        for(int i = 0; i < 4; i++){
+            highestDocIndexes.add(docIndex.get(i));
         }
 
         if(selectedIndex == -1)
-            return selectedIndex;
+            return null;
 
-        return docIndex.get(selectedIndex);
+        return highestDocIndexes;
     }
 
     public Integer searchSpecific(String query, Integer subcategoryIndex) throws Exception{
