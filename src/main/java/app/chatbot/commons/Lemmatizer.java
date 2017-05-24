@@ -16,7 +16,7 @@ public class Lemmatizer {
 
     public Lemmatizer() throws Exception{
         Set<String> dictionary = new HashSet<>();
-        InputStream in = this.getClass().getResourceAsStream("/assets/root-words.txt");
+        InputStream in = this.getClass().getResourceAsStream("/root-words.txt");
 
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
