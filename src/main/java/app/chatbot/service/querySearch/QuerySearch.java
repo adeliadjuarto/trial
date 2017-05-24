@@ -111,11 +111,17 @@ public class QuerySearch {
         result = new ArrayList<>();
         docIndex = new ArrayList<>();
 
+        List<Integer> contentIndexes = new ArrayList<>();
+
+        for(Content c: contentRepository.findAllBySubcategoryID(subcategoryIndex)) {
+            contentIndexes.add(c.getId());
+        }
+
         for (Pair<Writable, VectorWritable> pair : iterable) {
             Vector y = pair.getSecond().get();
             Integer index = Integer.parseInt(pair.getFirst().toString());
 
-            if(contentRepository.findOne(index).getSubcategoryId() == subcategoryIndex) {
+            if(contentIndexes.contains(index)) {
                 result.add(y);
                 docIndex.add(index);
             }
