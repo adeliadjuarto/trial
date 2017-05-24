@@ -30,7 +30,7 @@ public class ChatService {
     @Autowired
         private QuerySearch querySearch;
 
-    Map <String, Integer> context = new HashMap<String, Integer>();
+    Map <String, Integer> context = new HashMap<>();
 
     Integer categoryIndex = -1;
     Integer subcategoryIndex = -1;
@@ -110,9 +110,8 @@ public class ChatService {
     }
 
     public void levelThree(String query, String from) throws Exception {
-        resultIndex = querySearch.search(query);
+        resultIndex = querySearch.searchAll(query);
         resultIndexFromSubcategory = querySearch.searchSpecific(query, subcategoryIndex);
-        System.out.println("index sub:"+resultIndexFromSubcategory);
 
         if(resultIndex != -1) {
             searchResultTitle = "Search Result";
@@ -121,9 +120,8 @@ public class ChatService {
             if(resultSubcategoryIndex == subcategoryIndex)
                 searchResultContent = contentRepository.findOne(resultIndex).getOriginal();
             else {
-                searchResultTitle = "Search Result From It's Subcategory";
-//                searchResultContent = contentRepository.findOne(resultIndexFromSubcategory).getOriginal();
-                searchResultContent = "test";
+                searchResultTitle = "Search Result From its Subcategory";
+                searchResultContent = contentRepository.findOne(resultIndexFromSubcategory).getOriginal();
                 messages.add(new Message(searchResultTitle, searchResultContent));
 
                 searchResultTitle = "Search Result From All Document";
@@ -199,9 +197,6 @@ public class ChatService {
     public Integer getSubcategoryByContentIndex(Integer contentIndex) throws Exception {
         return contentRepository.findOne(contentIndex).getSubcategoryId();
     }
-
-
-
 
     public void resetChat(String from) throws Exception {
         context.put(from, 0);

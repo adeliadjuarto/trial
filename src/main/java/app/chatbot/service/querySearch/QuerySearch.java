@@ -27,17 +27,19 @@ public class QuerySearch {
     private QueryVectorizer vectorizer;
     private Hasher hasher;
 
-    private List<Vector> result = new ArrayList<>();
-    private List<String> docIndex = new ArrayList<>();
+    private List<Vector> result;
+    private List<Integer> docIndex;
     private List<String> stemmedDocuments = new ArrayList<>();
 
     private Path tfidfPath = new Path("output/service");
     private String docPath = "./assets/skbca.txt";
 
+    private SequenceFileIterable<Writable, VectorWritable> iterable;
+
     @Autowired
     private ContentRepository contentRepository;
 
-    public Integer search(String query) throws Exception{
+    public void prepare() throws Exception {
         tfidf = new TFIDF();
         hasher = new Hasher();
         vectorizer = new QueryVectorizer();
@@ -55,32 +57,37 @@ public class QuerySearch {
             hasher.createHashFile(docPath);
         }
 
-        SequenceFileIterable<Writable, VectorWritable> iterable = new SequenceFileIterable<> (
+        iterable = new SequenceFileIterable<> (
                 new Path(tfidfPath + "/tfidf-vectors/part-r-00000"), new Configuration());
+
+    }
+
+    public Integer searchAll(String query) throws Exception{
+
+        prepare();
+
+        result = new ArrayList<>();
+        docIndex = new ArrayList<>();
+
+        for (Pair<Writable, VectorWritable> pair : iterable) {
+            Vector y = pair.getSecond().get();
+            Integer index = Integer.parseInt(pair.getFirst().toString());
+
+            result.add(y);
+            docIndex.add(index);
+        }
 
         vectorizer.vectorize(query);
         Vector queryVector = vectorizer.getResult();
 
-        return Integer.parseInt(searchAll(iterable, queryVector));
-    }
-
-    public String searchAll(SequenceFileIterable<Writable, VectorWritable> iterable, Vector source){
-        for (Pair<Writable, VectorWritable> pair : iterable) {
-            Vector y = pair.getSecond().get();
-            String x = pair.getFirst().toString();
-
-            result.add(y);
-            docIndex.add(x);
-        }
-
         double maxScore = 0.0;
         int selectedIndex = -1;
 
-        for(int i = 0; i<result.size(); i++) {
+        for(int i = 0; i< result.size(); i++) {
             double docScore;
 
-            docScore = source.dot(result.get(i)) /
-                    (Math.sqrt(source.getLengthSquared()) *
+            docScore = queryVector.dot(result.get(i)) /
+                    (Math.sqrt(queryVector.getLengthSquared()) *
                             Math.sqrt(result.get(i).getLengthSquared()));
 
             if(docScore > maxScore) {
@@ -90,62 +97,60 @@ public class QuerySearch {
         }
 
         if(selectedIndex == -1)
-            return "Not Found";
+            return selectedIndex;
 
         return docIndex.get(selectedIndex);
     }
 
     public Integer searchSpecific(String query, Integer subcategoryIndex) throws Exception{
-        SequenceFileIterable<Writable, VectorWritable> iterable = new SequenceFileIterable<> (
-                new Path(tfidfPath + "/tfidf-vectors/part-r-00000"), new Configuration());
-
+        prepare();
 
         vectorizer.vectorize(query);
         Vector queryVector = vectorizer.getResult();
 
-        return Integer.parseInt(searchFromSubcategory(iterable, queryVector, subcategoryIndex));
-    }
+        result = new ArrayList<>();
+        docIndex = new ArrayList<>();
 
-    public String searchFromSubcategory(SequenceFileIterable<Writable, VectorWritable> iterable, Vector source, Integer subcategoryIndex){
         for (Pair<Writable, VectorWritable> pair : iterable) {
             Vector y = pair.getSecond().get();
-            String x = pair.getFirst().toString();
+            Integer index = Integer.parseInt(pair.getFirst().toString());
 
-            result.add(y);
-            docIndex.add(x);
+            if(contentRepository.findOne(index).getSubcategoryId() == subcategoryIndex) {
+                result.add(y);
+                docIndex.add(index);
+            }
+
         }
 
         double maxScore = 0.0;
         int selectedIndex = -1;
 
-        int startIndex = contentRepository.findFirstBySubcategoryId(subcategoryIndex).getId();
-        int endIndex = contentRepository.findFirstBySubcategoryIdOrderByIdDesc(subcategoryIndex).getId();
-
-        for(int i = startIndex; i <= endIndex; i++) {
+        for(int i = 0; i < result.size(); i++) {
             double docScore;
 
-            docScore = source.dot(result.get(docIndex.indexOf(i))) /
-                    (Math.sqrt(source.getLengthSquared()) *
-                            Math.sqrt(result.get(docIndex.indexOf(i)).getLengthSquared()));
+            System.out.println(result.get(i));
+            System.out.println(docIndex.get(i));
+            System.out.println(i);
+
+            docScore = queryVector.dot(result.get(i)) /
+                    (Math.sqrt(queryVector.getLengthSquared()) *
+                            Math.sqrt(result.get(i).getLengthSquared()));
 
             if(docScore > maxScore) {
                 maxScore = docScore;
-                selectedIndex = docIndex.indexOf(i);
+                selectedIndex = i;
             }
         }
 
-//        if(selectedIndex == -1)
-//            return "Not Found";
-        return docIndex.get(23);
-//        return docIndex.get(selectedIndex);
+        return docIndex.get(selectedIndex);
     }
 
     private void loadStemmedDocumentsTo(List<String> documents) throws Exception {
         documents.clear();
+        System.out.println(contentRepository == null);
         for(Content i: contentRepository.findAll()) {
             documents.add(i.getStemmed());
         }
     }
-
 
 }

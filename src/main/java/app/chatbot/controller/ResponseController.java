@@ -35,9 +35,6 @@ public class ResponseController{
 
         chatService.chat(body, from);
 
-//        String title = chatService.searchResultTitle;
-//        String content = chatService.searchResultContent;
-
         return chatService.messages;
     }
 
