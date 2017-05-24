@@ -19,6 +19,7 @@ public class ChatService {
     public String searchResultTitle;
     public String searchResultContent;
     private Integer resultIndex;
+    private Integer resultIndexFromSubcategory;
 
     public ArrayList<Message> messages;
 
@@ -110,14 +111,22 @@ public class ChatService {
 
     public void levelThree(String query, String from) throws Exception {
         resultIndex = querySearch.search(query);
+        resultIndexFromSubcategory = querySearch.searchSpecific(query, subcategoryIndex);
+        System.out.println("index sub:"+resultIndexFromSubcategory);
 
         if(resultIndex != -1) {
             searchResultTitle = "Search Result";
             Integer resultSubcategoryIndex = getSubcategoryByContentIndex(resultIndex);
 
             if(resultSubcategoryIndex == subcategoryIndex)
-                searchResultContent = contentRepository.findOne(resultIndex-1).getOriginal();
+                searchResultContent = contentRepository.findOne(resultIndex).getOriginal();
             else {
+                searchResultTitle = "Search Result From It's Subcategory";
+//                searchResultContent = contentRepository.findOne(resultIndexFromSubcategory).getOriginal();
+                searchResultContent = "test";
+                messages.add(new Message(searchResultTitle, searchResultContent));
+
+                searchResultTitle = "Search Result From All Document";
                 searchResultContent = "We don't find the best match of what you're looking for at " + getSubcategoryValue(subcategoryIndex);
                 searchResultContent += " However, we found a document on " + getSubcategoryValue(resultSubcategoryIndex);
                 searchResultContent += " on the category " + getCategoryValue(categoryRepository.findOne(resultSubcategoryIndex).getParentId());
@@ -188,7 +197,7 @@ public class ChatService {
     }
 
     public Integer getSubcategoryByContentIndex(Integer contentIndex) throws Exception {
-        return contentRepository.findOne(contentIndex).getSubcategory_id();
+        return contentRepository.findOne(contentIndex).getSubcategoryId();
     }
 
 

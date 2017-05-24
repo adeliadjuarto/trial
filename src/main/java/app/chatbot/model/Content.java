@@ -14,14 +14,14 @@ public class Content {
     private Integer id;
     private String original;
     private String stemmed;
-    private Integer subcategory_id;
+    private Integer subcategoryId;
 
     protected Content() {}
 
     public Content(String original, String stemmed, Integer subcategory_id) {
         this.original = original;
         this.stemmed = stemmed;
-        this.subcategory_id = subcategory_id;
+        this.subcategoryId = subcategory_id;
     }
 
     public Integer getId() {
@@ -48,11 +48,11 @@ public class Content {
         this.stemmed = stemmed;
     }
 
-    public Integer getSubcategory_id() {
-        return subcategory_id;
+    public Integer getSubcategoryId() {
+        return subcategoryId;
     }
 
-    public void setSubcategory_id(Integer subcategory_id) {
-        this.subcategory_id = subcategory_id;
+    public void setSubcategoryId(Integer subcategoryId) {
+        this.subcategoryId = subcategoryId;
     }
 }
