@@ -14,7 +14,6 @@ import org.apache.mahout.math.Vector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -120,7 +119,7 @@ public class QuerySearch {
 
         List<Integer> contentIndexes = new ArrayList<>();
 
-        for(Content c: contentRepository.findAllBySubcategoryID(subcategoryIndex)) {
+        for(Content c: contentRepository.findAllBySubcategoryId(subcategoryIndex)) {
             contentIndexes.add(c.getId());
         }
 

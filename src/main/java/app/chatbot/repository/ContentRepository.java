@@ -14,7 +14,7 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
     Content findFirstBySubcategoryId(Integer index);
     Content findFirstBySubcategoryIdOrderByIdDesc(Integer index);
 
-    List<Content> findAllBySubcategoryID(Integer index);
+    List<Content> findAllBySubcategoryId(Integer index);
 
     boolean existsByOriginal(String original);
 }
