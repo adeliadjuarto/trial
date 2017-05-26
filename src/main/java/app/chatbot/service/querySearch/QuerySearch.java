@@ -64,13 +64,16 @@ public class QuerySearch {
     }
 
     public ArrayList<Integer> searchAll(String query) throws Exception{
-
         prepare();
 
         result = new ArrayList<>();
         docIndex = new ArrayList<>();
-        ArrayList<Double> docScores = new ArrayList<>();
+
+        ArrayList<Double> dotProducts = new ArrayList<>();
         ArrayList<Integer> highestDocIndexes = new ArrayList<>();
+        Map<Double, Integer> dotProductsToKey = new HashMap<>();
+
+        int docsToTake = 4;
 
         for (Pair<Writable, VectorWritable> pair : iterable) {
             Vector y = pair.getSecond().get();
@@ -86,23 +89,22 @@ public class QuerySearch {
         int selectedIndex = -1;
 
         for(int i = 0; i< result.size(); i++) {
-            double score;
 
-            score = queryVector.dot(result.get(i)) /
+            Double score = queryVector.dot(result.get(i)) /
                     (Math.sqrt(queryVector.getLengthSquared()) *
                             Math.sqrt(result.get(i).getLengthSquared()));
-            docScores.add(score);
+            dotProducts.add(score);
+            dotProductsToKey.put(score, docIndex.get(i));
         }
 
-        //tambah sorting disini
+        Collections.sort(dotProducts, Collections.reverseOrder());
 
-
-        for(int i = 0; i < 4; i++){
-            highestDocIndexes.add(docIndex.get(i));
+        for(int i = 0; i < docsToTake; i++){
+            highestDocIndexes.add(dotProductsToKey.get(dotProducts.get(i)));
         }
 
-        if(selectedIndex == -1)
-            return null;
+//        if(selectedIndex == -1)
+//            return null;
 
         return highestDocIndexes;
     }
