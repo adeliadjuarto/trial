@@ -60,7 +60,10 @@ public class ResponseController{
 
     @RequestMapping("/save-excel")
     public @ResponseBody  String saveExcel() throws Exception{
+        // clean table
+        hospitalRepository.deleteAll();
 
+        // insert data
         InputStream in = this.getClass().getClassLoader().getResourceAsStream("test.xlsx");
         String sheetName = "RAWAT INAP";
         SheetParser parser = new SheetParser();
