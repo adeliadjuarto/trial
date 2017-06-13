@@ -3,3 +3,4 @@ build/
 vcs.xml
 gradle/
 output/
+application.properties
