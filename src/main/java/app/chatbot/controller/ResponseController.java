@@ -1,13 +1,14 @@
 package app.chatbot.controller;
 
+import app.chatbot.model.Employee;
 import app.chatbot.model.Hospital;
 import app.chatbot.repository.CategoryRepository;
 import app.chatbot.repository.ContentRepository;
+import app.chatbot.repository.EmployeeRepository;
 import app.chatbot.repository.HospitalRepository;
 import app.chatbot.model.Message;
 import app.chatbot.service.ChatService;
 import app.chatbot.service.FileParse;
-import app.excelparser.Data;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -30,7 +31,7 @@ public class ResponseController{
     @Autowired
     private ContentRepository contentRepository;
     @Autowired
-    private HospitalRepository hospitalRepository;
+    private EmployeeRepository employeeRepository;
     @Autowired
     private FileParse fileParse;
     @Autowired
@@ -61,19 +62,19 @@ public class ResponseController{
     @RequestMapping("/save-excel")
     public @ResponseBody  String saveExcel() throws Exception{
         // clean table
-        hospitalRepository.deleteAll();
+        employeeRepository.deleteAll();
 
         // insert data
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream("test.xlsx");
-        String sheetName = "RAWAT INAP";
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("tes.xlsx");
+        String sheetName = "Employee List";
         SheetParser parser = new SheetParser();
 
         Sheet sheet = new XSSFWorkbook(in).getSheet(sheetName);
 
-        List<Hospital> entityList = parser.createEntity(sheet, sheetName, Hospital.class);
+        List<Employee> entityList = parser.createEntity(sheet, sheetName, Employee.class);
 
-        for(Hospital i: entityList) {
-            hospitalRepository.save(i);
+        for(Employee i: entityList) {
+            employeeRepository.save(i);
         }
 
         return "Save successful";
