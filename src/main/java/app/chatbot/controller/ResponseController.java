@@ -65,7 +65,7 @@ public class ResponseController{
         employeeRepository.deleteAll();
 
         // insert data
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream("tes.xlsx");
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("contacts-trial.xlsx");
         String sheetName = "Employee List";
         SheetParser parser = new SheetParser();
 
@@ -78,5 +78,10 @@ public class ResponseController{
         }
 
         return "Save successful";
+    }
+
+    @RequestMapping("/get-all-contacts")
+    public @ResponseBody  Iterable<Employee> getEmployee() throws Exception{
+        return employeeRepository.findAllByOrderByEmployeeNameAsc();
     }
 }
