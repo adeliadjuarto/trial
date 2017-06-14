@@ -84,4 +84,14 @@ public class ResponseController{
     public @ResponseBody  Iterable<Employee> getEmployee() throws Exception{
         return employeeRepository.findAllByOrderByEmployeeNameAsc();
     }
+
+    @RequestMapping("/find-contact")
+    public @ResponseBody  Employee findEmployee(@RequestParam("id") Integer id) throws Exception{
+        return employeeRepository.findByRowID(id);
+    }
+
+    @RequestMapping("/search-contacts")
+    public @ResponseBody  Iterable<Employee> searchEmployeeByName(@RequestParam("name") String name) throws Exception{
+        return employeeRepository.findByEmployeeNameContaining(name);
+    }
 }
