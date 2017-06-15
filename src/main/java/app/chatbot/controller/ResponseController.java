@@ -117,4 +117,15 @@ public class ResponseController{
 
         return "Save successful";
     }
+
+    @RequestMapping("/find-hospital")
+    public @ResponseBody  Hospital findHospital(@RequestParam("id") Integer id) throws Exception{
+        return hospitalRepository.findOne(id);
+    }
+
+    @RequestMapping("/search-hospitals")
+    public @ResponseBody  Iterable<Hospital> searchHospitals(@RequestParam("city") String city, @RequestParam("provider") String provider, @RequestParam("bpjs") String bpjs) throws Exception{
+        return hospitalRepository.findByCityAndProviderAndBpjs(city, provider, bpjs);
+    }
+
 }
