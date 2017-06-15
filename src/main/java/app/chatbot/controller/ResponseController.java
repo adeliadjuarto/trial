@@ -33,6 +33,8 @@ public class ResponseController{
     @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
+    private HospitalRepository hospitalRepository;
+    @Autowired
     private FileParse fileParse;
     @Autowired
     private ChatService chatService;
@@ -59,8 +61,8 @@ public class ResponseController{
         return new Message("Hi", "Hai juga");
     }
 
-    @RequestMapping("/save-excel")
-    public @ResponseBody  String saveExcel() throws Exception{
+    @RequestMapping("/save-excel-employee")
+    public @ResponseBody  String saveExcelEmployee() throws Exception{
         // clean table
         employeeRepository.deleteAll();
 
@@ -93,5 +95,26 @@ public class ResponseController{
     @RequestMapping("/search-contacts")
     public @ResponseBody  Iterable<Employee> searchEmployeeByName(@RequestParam("name") String name) throws Exception{
         return employeeRepository.findByEmployeeNameContaining(name);
+    }
+
+    @RequestMapping("/save-excel-hospital")
+    public @ResponseBody  String saveExcelHospital() throws Exception{
+        // clean table
+        hospitalRepository.deleteAll();
+
+        // insert data
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("PROVIDER_BCA_MARET_2017_CAR_revisi.xlsx");
+        String sheetName = "RAWAT INAP";
+        SheetParser parser = new SheetParser();
+
+        Sheet sheet = new XSSFWorkbook(in).getSheet(sheetName);
+
+        List<Hospital> entityList = parser.createEntity(sheet, sheetName, Hospital.class);
+
+        for(Hospital i: entityList) {
+            hospitalRepository.save(i);
+        }
+
+        return "Save successful";
     }
 }
