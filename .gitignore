@@ -4,3 +4,10 @@ vcs.xml
 gradle/
 output/
 application.properties
+*.bin
+
+*.lock
+
+.gradle/buildOutputCleanup/cache.properties
+
+*.xml
