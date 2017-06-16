@@ -11,3 +11,5 @@ application.properties
 .gradle/buildOutputCleanup/cache.properties
 
 *.xml
+
+*.iml

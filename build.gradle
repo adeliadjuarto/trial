@@ -43,6 +43,9 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-jpa') {
         exclude module: "logback-classic"
     }
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf') {
+        exclude module: "logback-classic"
+    }
     compile('mysql:mysql-connector-java')
 
     compile('org.apache.mahout:mahout-core:0.9')
