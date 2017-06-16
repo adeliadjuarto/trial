@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BCA HR APPS</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <a href="/hospital/import-hospital">Import Hospital</a>
+    <h1>Hospitals:</h1>
+    <table border="1">
+        <tr>
+            <td>City</td>
+            <td>Provider</td>
+            <td>Bpjs</td>
+            <td>Address</td>
+            <td>Telephone</td>
+            <td>Fax</td>
+        </tr>
+        <tr th:each="hospital : ${hospitals}">
+            <td th:text="${hospital.city}"></td>
+            <td th:text="${hospital.provider}"></td>
+            <td th:text="${hospital.bpjs}"></td>
+            <td th:text="${hospital.address}"></td>
+            <td th:text="${hospital.telephone}"></td>
+            <td th:text="${hospital.fax}"></td>
+        </tr>
+    </table>
+</body>
+</html>

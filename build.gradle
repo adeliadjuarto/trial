@@ -56,4 +56,6 @@ dependencies {
     compile("org.javafunk:excel-parser:1.0")
     compile("com.fasterxml.jackson.core:jackson-databind")
 
+    runtime 'net.sourceforge.nekohtml:nekohtml:1.9.15'
+
 }
