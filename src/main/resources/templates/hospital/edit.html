@@ -4,7 +4,8 @@
       layout:decorator="layouts/layout">
 <body>
 <div layout:fragment="body">
-    <form action="#" th:action="@{/hospital/add}" th:object="${hospital}" method="post">
+    <form action="#" th:action="@{/hospital/update}" th:object="${hospital}" method="post">
+        <input type="hidden" th:field="*{id}">
         <div>
             City: <input type="text" th:field="*{city}" />
         </div>

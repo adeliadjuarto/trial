@@ -1,7 +1,9 @@
 package app.chatbot.controller;
 
+import app.chatbot.model.Contact;
 import app.chatbot.model.Employee;
 import app.chatbot.model.Hospital;
+import app.chatbot.repository.ContactRepository;
 import app.chatbot.repository.EmployeeRepository;
 import app.chatbot.repository.HospitalRepository;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -12,10 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -36,6 +35,8 @@ public class ViewController {
     @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
+    private ContactRepository contactRepository;
+    @Autowired
     private HospitalRepository hospitalRepository;
 
     @RequestMapping("/")
@@ -52,8 +53,29 @@ public class ViewController {
         return "hospital/import";
     }
     @RequestMapping("hospital/create")
-    public String createHospital() throws Exception{
+    public String createHospital(Model model) throws Exception{
+        model.addAttribute("hospital", new Hospital());
         return "hospital/create";
+    }
+    @RequestMapping(value = "hospital/add", method = RequestMethod.POST)
+    public String addCustomer(@ModelAttribute Hospital hospital) {
+        hospitalRepository.save(hospital);
+        return "redirect:/hospital";
+    }
+    @RequestMapping("hospital/edit/{id}")
+    public String editHospital(Model model, @PathVariable(value="id") int id) throws Exception{
+        model.addAttribute("hospital", hospitalRepository.findOne(id));
+        return "hospital/edit";
+    }
+    @RequestMapping(value = "hospital/update", method = RequestMethod.POST)
+    public String updateHospital(@ModelAttribute Hospital hospital) {
+        hospitalRepository.save(hospital);
+        return "redirect:/hospital";
+    }
+    @RequestMapping(value = "hospital/delete/{id}")
+    public String deleteHospital(@PathVariable(value="id") int id) {
+        hospitalRepository.delete(id);
+        return "redirect:/hospital";
     }
     @RequestMapping(value = "/save-excel-hospital", method = RequestMethod.POST)
     public String saveExcelHospital(@RequestParam("file") MultipartFile file) throws Exception{
@@ -110,20 +132,25 @@ public class ViewController {
         }
 
         // clean table
-        employeeRepository.deleteAll();
+        //employeeRepository.deleteAll();
+        contactRepository.deleteAll();
 
         // insert data
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream("contacts-trial.xlsx");
+        InputStream in = new FileSystemResource(directoryPath + file.getOriginalFilename()).getInputStream();
         String sheetName = "Employee List";
         SheetParser parser = new SheetParser();
 
         Sheet sheet = new XSSFWorkbook(in).getSheet(sheetName);
 
         List<Employee> entityList = parser.createEntity(sheet, sheetName, Employee.class);
-
+        int test = 0;
         for(Employee i: entityList) {
             if(i.getEmployeeName() != null){
-                employeeRepository.save(i);
+                String uuid = "test"+test;
+                Contact contact = new Contact(uuid, i.getStsrc(), i.getDateChange(), i.getEmployeeId(), i.getNIP(), i.getEmployeeName(), i.getBranchID(), i.getDivisionID(), i.getRegionID(), i.getJobTitleID(), i.getCEK(), i.getBirthDate());
+                contactRepository.save(contact);
+                
+                test++;
             }
         }
 

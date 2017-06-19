@@ -16,6 +16,7 @@
                 <th>Address</th>
                 <th>Telephone</th>
                 <th>Fax</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,10 @@
                 <td th:text="${hospital.address}"></td>
                 <td th:text="${hospital.telephone}"></td>
                 <td th:text="${hospital.fax}"></td>
+                <td>
+                    <a th:href="@{/hospital/edit/{id}(id=${hospital.id})}">Edit</a>
+                    <a th:href="@{/hospital/delete/{id}(id=${hospital.id})}">Delete</a>
+                </td>
             </tr>
         </tbody>
     </table>
