@@ -27,7 +27,7 @@ public class PhoneNumber {
     @GenericGenerator(
             name = "uuid",
             strategy = "uuid")
-    @Column(name="id", columnDefinition = "CHAR(32)")
+    @Column(name="id")
     private String id;
     @Column(name="contact_id")
     private String contactId;
