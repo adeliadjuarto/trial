@@ -3,9 +3,11 @@ package app.chatbot.controller;
 import app.chatbot.model.Contact;
 import app.chatbot.model.Employee;
 import app.chatbot.model.Hospital;
+import app.chatbot.model.PhoneNumber;
 import app.chatbot.repository.ContactRepository;
 import app.chatbot.repository.EmployeeRepository;
 import app.chatbot.repository.HospitalRepository;
+import app.chatbot.repository.PhoneNumberRepository;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.javafunk.excelparser.SheetParser;
@@ -36,6 +38,8 @@ public class ViewController {
     private EmployeeRepository employeeRepository;
     @Autowired
     private ContactRepository contactRepository;
+    @Autowired
+    private PhoneNumberRepository phoneNumberRepository;
     @Autowired
     private HospitalRepository hospitalRepository;
 
@@ -144,12 +148,18 @@ public class ViewController {
 
         List<Employee> entityList = parser.createEntity(sheet, sheetName, Employee.class);
         int test = 0;
+        PhoneNumber phoneNumber;
         for(Employee i: entityList) {
             if(i.getEmployeeName() != null){
                 String uuid = "test"+test;
                 Contact contact = new Contact(uuid, i.getStsrc(), i.getDateChange(), i.getEmployeeId(), i.getNIP(), i.getEmployeeName(), i.getBranchID(), i.getDivisionID(), i.getRegionID(), i.getJobTitleID(), i.getCEK(), i.getBirthDate());
                 contactRepository.save(contact);
-                
+                phoneNumber = new PhoneNumber(uuid+"1", uuid, "home", i.getHomeTelp(), null);
+                phoneNumberRepository.save(phoneNumber);
+                phoneNumber = new PhoneNumber(uuid+"2", uuid, "handphone", i.getHandphoneTelp(), null);
+                phoneNumberRepository.save(phoneNumber);
+                phoneNumber = new PhoneNumber(uuid+"3", uuid, "office", i.getOfficeTelp(), i.getOfficeExt());
+                phoneNumberRepository.save(phoneNumber);
                 test++;
             }
         }
