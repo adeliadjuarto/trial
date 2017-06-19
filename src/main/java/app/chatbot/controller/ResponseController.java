@@ -33,9 +33,6 @@ import java.util.List;
 @RestController
 public class ResponseController{
 
-    @Value("${excel-directory-path}")
-    private String directoryPath;
-
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
@@ -71,39 +68,6 @@ public class ResponseController{
         return new Message("Hi", "Hai juga");
     }
 
-    @RequestMapping(value = "/save-excel-employee", method = RequestMethod.POST)
-    public @ResponseBody  String saveExcelEmployee(@RequestParam("file") MultipartFile file) throws Exception{
-        try {
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(directoryPath + file.getOriginalFilename());
-            System.out.println(file.getOriginalFilename());
-            Files.write(path, bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // clean table
-        employeeRepository.deleteAll();
-
-        // insert data
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream("contacts-trial.xlsx");
-        String sheetName = "Employee List";
-        SheetParser parser = new SheetParser();
-
-        Sheet sheet = new XSSFWorkbook(in).getSheet(sheetName);
-
-        List<Employee> entityList = parser.createEntity(sheet, sheetName, Employee.class);
-
-        for(Employee i: entityList) {
-            if(i.getEmployeeName() != null){
-                employeeRepository.save(i);
-            }
-        }
-
-        return "Save successful";
-    }
-
     @RequestMapping("/get-all-contacts")
     public @ResponseBody  Iterable<Employee> getEmployee() throws Exception{
         return employeeRepository.findAllByOrderByEmployeeNameAsc();
@@ -118,38 +82,7 @@ public class ResponseController{
     public @ResponseBody  Iterable<Employee> searchEmployeeByName(@RequestParam("name") String name) throws Exception{
         return employeeRepository.findByEmployeeNameContaining(name);
     }
-    @RequestMapping(value = "/save-excel-hospital", method = RequestMethod.POST)
-    public @ResponseBody  String saveExcelHospital(@RequestParam("file") MultipartFile file) throws Exception{
-        try {
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(directoryPath + file.getOriginalFilename());
-            System.out.println(file.getOriginalFilename());
-            Files.write(path, bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        // clean table
-        hospitalRepository.deleteAll();
-
-        // insert data
-        InputStream in = new FileSystemResource(directoryPath + file.getOriginalFilename()).getInputStream();
-        String sheetName = "RAWAT INAP";
-        SheetParser parser = new SheetParser();
-
-        Sheet sheet = new XSSFWorkbook(in).getSheet(sheetName);
-
-        List<Hospital> entityList = parser.createEntity(sheet, sheetName, Hospital.class);
-
-        for(Hospital i: entityList) {
-            if(i.getProvider() != null){
-                hospitalRepository.save(i);
-            }
-        }
-
-        return "Save successful";
-    }
 
     @RequestMapping("/find-hospital")
     public @ResponseBody  Hospital findHospital(@RequestParam("id") Integer id) throws Exception{
