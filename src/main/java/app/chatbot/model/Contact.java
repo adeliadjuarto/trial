@@ -2,9 +2,11 @@ package app.chatbot.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by adeliadjuarto on 6/19/17.
@@ -15,8 +17,7 @@ import java.util.Date;
 @Getter
 public class Contact {
     protected Contact () {}
-    public Contact (String id, String stsrc, Date dateChange, String employeeId, String nip, String name, String branchId, String divisionId, String regionId, String jobtitleId, String cek, Date birthdate) {
-        this.id = id;
+    public Contact (String stsrc, Date dateChange, String employeeId, String nip, String name, String branchId, String divisionId, String regionId, String jobtitleId, String cek, Date birthdate) {
         this.stsrc = stsrc;
         this.dateChange = dateChange;
         this.employeeId = employeeId;
@@ -31,6 +32,10 @@ public class Contact {
     }
 
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(
+            name = "uuid",
+            strategy = "uuid")
     @Column(name="id")
     private String id;
     @Column(name="stsrc")

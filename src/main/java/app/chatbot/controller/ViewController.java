@@ -147,20 +147,17 @@ public class ViewController {
         Sheet sheet = new XSSFWorkbook(in).getSheet(sheetName);
 
         List<Employee> entityList = parser.createEntity(sheet, sheetName, Employee.class);
-        int test = 0;
         PhoneNumber phoneNumber;
         for(Employee i: entityList) {
             if(i.getEmployeeName() != null){
-                String uuid = "test"+test;
-                Contact contact = new Contact(uuid, i.getStsrc(), i.getDateChange(), i.getEmployeeId(), i.getNIP(), i.getEmployeeName(), i.getBranchID(), i.getDivisionID(), i.getRegionID(), i.getJobTitleID(), i.getCEK(), i.getBirthDate());
-                contactRepository.save(contact);
-                phoneNumber = new PhoneNumber(uuid+"1", uuid, "home", i.getHomeTelp(), null);
+                Contact contact = new Contact(i.getStsrc(), i.getDateChange(), i.getEmployeeId(), i.getNIP(), i.getEmployeeName(), i.getBranchID(), i.getDivisionID(), i.getRegionID(), i.getJobTitleID(), i.getCEK(), i.getBirthDate());
+                contact = contactRepository.save(contact);
+                phoneNumber = new PhoneNumber(contact.getId(), "home", i.getHomeTelp(), null);
                 phoneNumberRepository.save(phoneNumber);
-                phoneNumber = new PhoneNumber(uuid+"2", uuid, "handphone", i.getHandphoneTelp(), null);
+                phoneNumber = new PhoneNumber(contact.getId(), "handphone", i.getHandphoneTelp(), null);
                 phoneNumberRepository.save(phoneNumber);
-                phoneNumber = new PhoneNumber(uuid+"3", uuid, "office", i.getOfficeTelp(), i.getOfficeExt());
+                phoneNumber = new PhoneNumber(contact.getId(), "office", i.getOfficeTelp(), i.getOfficeExt());
                 phoneNumberRepository.save(phoneNumber);
-                test++;
             }
         }
 

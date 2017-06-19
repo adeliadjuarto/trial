@@ -2,11 +2,10 @@ package app.chatbot.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.UUID;
 
 /**
  * Created by adeliadjuarto on 6/19/17.
@@ -17,24 +16,27 @@ import javax.persistence.Table;
 @Getter
 public class PhoneNumber {
     protected PhoneNumber () {}
-    public PhoneNumber (String id, String contactId, String type, String number, String extension) {
-        this.id = id;
+    public PhoneNumber (String contactId, String type, String number, String extension) {
         this.contactId = contactId;
         this.type = type;
         this.number = number;
         this.extension = extension;
     }
     @Id
-    @Column(name="id")
-    String id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(
+            name = "uuid",
+            strategy = "uuid")
+    @Column(name="id", columnDefinition = "CHAR(32)")
+    private String id;
     @Column(name="contact_id")
-    String contactId;
+    private String contactId;
     @Column(name="type")
-    String type;
+    private String type;
     @Column(name="number")
-    String number;
+    private String number;
     @Column(name="extension")
-    String extension;
+    private String extension;
 
 
 }
