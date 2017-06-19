@@ -5,7 +5,6 @@ import app.chatbot.model.Employee;
 import app.chatbot.model.Hospital;
 import app.chatbot.model.PhoneNumber;
 import app.chatbot.repository.ContactRepository;
-import app.chatbot.repository.EmployeeRepository;
 import app.chatbot.repository.HospitalRepository;
 import app.chatbot.repository.PhoneNumberRepository;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -34,8 +33,6 @@ public class ViewController {
     @Value("${excel-directory-path}")
     private String directoryPath;
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
     @Autowired
     private ContactRepository contactRepository;
     @Autowired
@@ -116,7 +113,7 @@ public class ViewController {
 
     @RequestMapping("/contact")
     public String contact(Model model) throws Exception{
-        model.addAttribute("employees", employeeRepository.findAll());
+        model.addAttribute("employees", contactRepository.findAll());
         return "contact/index";
     }
     @RequestMapping("contact/import-contact")
@@ -136,8 +133,8 @@ public class ViewController {
         }
 
         // clean table
-        //employeeRepository.deleteAll();
         contactRepository.deleteAll();
+        phoneNumberRepository.deleteAll();
 
         // insert data
         InputStream in = new FileSystemResource(directoryPath + file.getOriginalFilename()).getInputStream();

@@ -12,37 +12,29 @@
                 <th>NIP</th>
                 <th>Name</th>
                 <th>Position</th>
-                <th>Home</th>
-                <th>Mobile</th>
-                <th>Office</th>
-                <th>stsrc</th>
-                <th>dateChange</th>
-                <th>employeeId</th>
-                <th>branchID</th>
-                <th>divisionID</th>
-                <th>regionID</th>
+                <th>Stsrc</th>
+                <th>Date Change</th>
+                <th>Employee ID</th>
+                <th>Branch ID</th>
+                <th>Division ID</th>
+                <th>Region ID</th>
                 <th>CEK</th>
-                <th>birthDate</th>
-                <th>officeExt</th>
+                <th>Birthdate</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="employee : ${employees}">
-                <td th:text="${employee.NIP}"></td>
-                <td th:text="${employee.employeeName}"></td>
-                <td th:text="${employee.jobTitleID}"></td>
-                <td th:text="${employee.homeTelp}"></td>
-                <td th:text="${employee.handphoneTelp}"></td>
-                <td th:text="${employee.officeTelp}"></td>
+                <td th:text="${employee.nip}"></td>
+                <td th:text="${employee.name}"></td>
+                <td th:text="${employee.jobtitleId}"></td>
                 <td th:text="${employee.stsrc}"></td>
                 <td th:text="${employee.dateChange}"></td>
                 <td th:text="${employee.employeeId}"></td>
-                <td th:text="${employee.branchID}"></td>
-                <td th:text="${employee.divisionID}"></td>
-                <td th:text="${employee.regionID}"></td>
-                <td th:text="${employee.CEK}"></td>
-                <td th:text="${employee.birthDate}"></td>
-                <td th:text="${employee.officeExt}"></td>
+                <td th:text="${employee.branchId}"></td>
+                <td th:text="${employee.divisionId}"></td>
+                <td th:text="${employee.regionId}"></td>
+                <td th:text="${employee.cek}"></td>
+                <td th:text="${employee.birthdate}"></td>
             </tr>
         </tbody>
     </table>
