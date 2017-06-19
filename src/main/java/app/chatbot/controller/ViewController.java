@@ -45,15 +45,15 @@ public class ViewController {
     @RequestMapping("/hospital")
     public String hospital(Model model) throws Exception{
         model.addAttribute("hospitals", hospitalRepository.findAll());
-        return "hospital";
+        return "hospital/index";
     }
     @RequestMapping("hospital/import-hospital")
     public String importHospital() throws Exception{
-        return "importHospital";
+        return "hospital/import";
     }
     @RequestMapping("hospital/create")
     public String createHospital() throws Exception{
-        return "createHospital";
+        return "hospital/create";
     }
     @RequestMapping(value = "/save-excel-hospital", method = RequestMethod.POST)
     public String saveExcelHospital(@RequestParam("file") MultipartFile file) throws Exception{
@@ -91,11 +91,11 @@ public class ViewController {
     @RequestMapping("/contact")
     public String contact(Model model) throws Exception{
         model.addAttribute("employees", employeeRepository.findAll());
-        return "contact";
+        return "contact/index";
     }
     @RequestMapping("contact/import-contact")
     public String importContact() throws Exception{
-        return "importContact";
+        return "contact/import";
     }
     @RequestMapping(value = "/save-excel-employee", method = RequestMethod.POST)
     public String saveExcelEmployee(@RequestParam("file") MultipartFile file) throws Exception{
