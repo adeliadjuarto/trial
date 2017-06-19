@@ -1,15 +1,15 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>BCA HR APPS</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
 <body>
+<div layout:fragment="body">
 <form method="POST" enctype="multipart/form-data" action="/save-excel-hospital">
     <table>
         <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
         <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
     </table>
 </form>
+</div>
 </body>
 </html>

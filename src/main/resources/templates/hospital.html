@@ -1,15 +1,9 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>BCA HR APPS</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
 <body>
+<div layout:fragment="body">
     <a href="/hospital/import-hospital">Import Hospital</a>
     <h1>Hospitals:</h1>
     <table id="hospitalTable" border="0" class="table-striped">
@@ -34,12 +28,14 @@
             </tr>
         </tbody>
     </table>
+    <script>
+        $(document).ready( function () {
+             $('#hospitalTable').DataTable( {
+                "scrollX": true
+            } );
+        });
+    </script>
+</div>
 </body>
-<script>
-    $(document).ready( function () {
-         $('#hospitalTable').DataTable( {
-            "scrollX": true
-        } );
-    });
-</script>
+
 </html>

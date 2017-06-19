@@ -1,5 +1,6 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>BCA HR APPS</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -9,3 +10,12 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 </head>
+<body>
+<header>
+    <a href="/hospital">Hospital</a>
+    <a href="/contact">Contact</a>
+</header>
+<section layout:fragment="body">
+</section>
+</body>
+</html>
