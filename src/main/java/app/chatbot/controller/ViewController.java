@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,7 +60,7 @@ public class ViewController {
         return "hospital/create";
     }
     @RequestMapping(value = "hospital/add", method = RequestMethod.POST)
-    public String addCustomer(@ModelAttribute Hospital hospital) {
+    public String addHospital(@ModelAttribute Hospital hospital) {
         hospitalRepository.save(hospital);
         return "redirect:/hospital";
     }
@@ -114,19 +115,38 @@ public class ViewController {
     @RequestMapping("/contact")
     public String contact(Model model) throws Exception{
         model.addAttribute("employees", contactRepository.findAll());
-
-//        Contact test = contactRepository.findOne("0124adbd-23db-4249-be3c-f19acdbef34c");
-//        List<PhoneNumber> phonetest = test.getPhoneNumber();
-//
-//        for(PhoneNumber p:phonetest){
-//            System.out.println(p.getType()+": "+p.getNumber());
-//        }
-
         return "contact/index";
     }
     @RequestMapping("contact/import-contact")
     public String importContact() throws Exception{
         return "contact/import";
+    }
+
+    @RequestMapping("contact/create")
+    public String createContact(Model model) throws Exception{
+        model.addAttribute("contact", new Contact());
+//        model.addAttribute("contact", new Contact("", new Date(),"","", "","", "", "", "", "", new Date()));
+        return "contact/create";
+    }
+    @RequestMapping(value = "contact/add", method = RequestMethod.POST)
+    public String addContact(@ModelAttribute Contact contact) {
+        contactRepository.save(contact);
+        return "redirect:/contact";
+    }
+    @RequestMapping("contact/edit/{id}")
+    public String editContact(Model model, @PathVariable(value="id") String id) throws Exception{
+        model.addAttribute("contact", contactRepository.findOne(id));
+        return "contact/edit";
+    }
+    @RequestMapping(value = "contact/update", method = RequestMethod.POST)
+    public String updateContact(@ModelAttribute Contact contact) {
+        contactRepository.save(contact);
+        return "redirect:/contact";
+    }
+    @RequestMapping(value = "contact/delete/{id}")
+    public String deleteContact(@PathVariable(value="id") String id) {
+        contactRepository.delete(id);
+        return "redirect:/contact";
     }
     @RequestMapping(value = "/save-excel-employee", method = RequestMethod.POST)
     public String saveExcelEmployee(@RequestParam("file") MultipartFile file) throws Exception{

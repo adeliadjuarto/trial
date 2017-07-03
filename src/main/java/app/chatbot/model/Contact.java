@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @Getter
 public class Contact {
-    protected Contact () {}
+    public Contact () {}
     public Contact (String stsrc, Date dateChange, String employeeId, String nip, String name, String branchId, String divisionId, String regionId, String jobtitleId, String cek, Date birthdate) {
         this.stsrc = stsrc;
         this.dateChange = dateChange;
@@ -60,6 +60,7 @@ public class Contact {
     private String cek;
     @Column(name="birthdate")
     private Date birthdate;
-//    @OneToMany
-//    private List<PhoneNumber> phoneNumber;
+    @OneToMany
+    @JoinColumn(name = "contact_id")
+    private List<PhoneNumber> phoneNumber;
 }

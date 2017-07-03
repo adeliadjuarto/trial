@@ -5,6 +5,7 @@
 <body>
 <div layout:fragment="body">
     <a href="/contact/import-contact">Import Contact</a>
+    <a href="/contact/create">Add Contact</a>
     <h1>Contacts:</h1>
     <table id="contactTable" border="0" class="table-striped">
         <thead>
@@ -29,7 +30,11 @@
                 <td th:text="${employee.name}"></td>
                 <td th:text="${employee.jobtitleId}"></td>
                 <td>
-                    test
+                    <div th:each="contact : ${employee.phoneNumber}">
+                        <b><span th:text="${contact.type}"></span></b>:
+                        <span th:text="${contact.number}"></span>
+                        </b><span th:text="${contact.extension != null} ? 'ext:'+${contact.extension}"></span>
+                    </div>
                 </td>
                 <td th:text="${employee.stsrc}"></td>
                 <td th:text="${employee.dateChange}"></td>

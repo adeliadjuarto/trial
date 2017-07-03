@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<body>
+<div layout:fragment="body">
+    <form action="#" th:action="@{/contact/update}" th:object="${contact}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div>
+            NIP: <input type="text" th:field="*{nip}" />
+        </div>
+        <div>
+            Name: <input type="text" th:field="*{name}" />
+        </div>
+        <div>
+            Position: <input type="text" th:field="*{jobtitleId}" />
+        </div>
+        <div>
+            Stsrc: <input type="text" th:field="*{stsrc}" />
+        </div>
+        <div>
+            Date Change: <input type="text" th:field="*{dateChange}" />
+        </div>
+        <div>
+            Employee ID: <input type="text" th:field="*{employeeId}" />
+        </div>
+        <div>
+            Branch ID: <input type="text" th:field="*{branchId}" />
+        </div>
+        <div>
+            Division ID: <input type="text" th:field="*{divisionId}" />
+        </div>
+        <div>
+            Region ID: <input type="text" th:field="*{regionId}" />
+        </div>
+        <div>
+            CEK: <input type="text" th:field="*{cek}" />
+        </div>
+        <div>
+            Birthdate: <input type="text" th:field="*{birthdate}" />
+        </div>
+        <div>
+            <input type="submit" value="Submit" />
+        </div>
+    </form>
+</div>
+</body>
+</html>
