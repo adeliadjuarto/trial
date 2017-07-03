@@ -115,8 +115,8 @@ public class ViewController {
     public String contact(Model model) throws Exception{
         model.addAttribute("employees", contactRepository.findAll());
 
-//        Contact test = contactRepository.findOne("0136245a-9b2c-47e8-8a5b-b2a609cedbf2");
-//        PhoneNumber[] phonetest = test.getPhoneNumber();
+//        Contact test = contactRepository.findOne("0124adbd-23db-4249-be3c-f19acdbef34c");
+//        List<PhoneNumber> phonetest = test.getPhoneNumber();
 //
 //        for(PhoneNumber p:phonetest){
 //            System.out.println(p.getType()+": "+p.getNumber());

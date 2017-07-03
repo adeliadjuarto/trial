@@ -6,7 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
 /**
  * Created by adeliadjuarto on 6/19/17.
@@ -61,5 +61,5 @@ public class Contact {
     @Column(name="birthdate")
     private Date birthdate;
 //    @OneToMany
-//    private PhoneNumber[] phoneNumber;
+//    private List<PhoneNumber> phoneNumber;
 }

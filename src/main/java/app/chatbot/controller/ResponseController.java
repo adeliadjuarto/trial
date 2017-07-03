@@ -64,10 +64,9 @@ public class ResponseController{
     }
 
     @RequestMapping("/search-contacts")
-    public @ResponseBody  Iterable<Contact> searchEmployeeByName(@RequestParam("name") String name) throws Exception{
-        return contactRepository.findByNameContaining(name);
+    public @ResponseBody  Iterable<Contact> searchContactByNameAndJobtitle(@RequestParam("name") String name, @RequestParam("jobtitle") String jobtitle) throws Exception{
+        return contactRepository.findByNameContainingAndJobtitleIdContaining(name, jobtitle);
     }
-
 
     @RequestMapping("/find-hospital")
     public @ResponseBody  Hospital findHospital(@RequestParam("id") Integer id) throws Exception{
