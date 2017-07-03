@@ -1,31 +1,16 @@
 package app.chatbot.controller;
 
-import app.chatbot.model.Employee;
+import app.chatbot.model.Contact;
 import app.chatbot.model.Hospital;
-import app.chatbot.repository.CategoryRepository;
-import app.chatbot.repository.ContentRepository;
-import app.chatbot.repository.EmployeeRepository;
-import app.chatbot.repository.HospitalRepository;
+import app.chatbot.repository.*;
 import app.chatbot.model.Message;
 import app.chatbot.service.ChatService;
 import app.chatbot.service.FileParse;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.javafunk.excelparser.SheetParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by willemchua on 5/10/17.
@@ -38,7 +23,7 @@ public class ResponseController{
     @Autowired
     private ContentRepository contentRepository;
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private ContactRepository contactRepository;
     @Autowired
     private HospitalRepository hospitalRepository;
     @Autowired
@@ -69,18 +54,18 @@ public class ResponseController{
     }
 
     @RequestMapping("/get-all-contacts")
-    public @ResponseBody  Iterable<Employee> getEmployee() throws Exception{
-        return employeeRepository.findAllByOrderByEmployeeNameAsc();
+    public @ResponseBody  Iterable<Contact> getContact() throws Exception{
+        return contactRepository.findAllByOrderByNameAsc();
     }
 
     @RequestMapping("/find-contact")
-    public @ResponseBody  Employee findEmployee(@RequestParam("id") Integer id) throws Exception{
-        return employeeRepository.findByRowID(id);
+    public @ResponseBody  Contact findEmployee(@RequestParam("id") String id) throws Exception{
+        return contactRepository.findOne(id);
     }
 
     @RequestMapping("/search-contacts")
-    public @ResponseBody  Iterable<Employee> searchEmployeeByName(@RequestParam("name") String name) throws Exception{
-        return employeeRepository.findByEmployeeNameContaining(name);
+    public @ResponseBody  Iterable<Contact> searchEmployeeByName(@RequestParam("name") String name) throws Exception{
+        return contactRepository.findByNameContaining(name);
     }
 
 

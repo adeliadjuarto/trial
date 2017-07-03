@@ -32,10 +32,10 @@ public class Contact {
     }
 
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(
-            name = "uuid",
-            strategy = "uuid")
+            name = "system-uuid",
+            strategy = "uuid2")
     @Column(name="id")
     private String id;
     @Column(name="stsrc")
@@ -60,4 +60,6 @@ public class Contact {
     private String cek;
     @Column(name="birthdate")
     private Date birthdate;
+//    @OneToMany
+//    private PhoneNumber[] phoneNumber;
 }

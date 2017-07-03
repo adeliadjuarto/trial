@@ -114,6 +114,14 @@ public class ViewController {
     @RequestMapping("/contact")
     public String contact(Model model) throws Exception{
         model.addAttribute("employees", contactRepository.findAll());
+
+//        Contact test = contactRepository.findOne("0136245a-9b2c-47e8-8a5b-b2a609cedbf2");
+//        PhoneNumber[] phonetest = test.getPhoneNumber();
+//
+//        for(PhoneNumber p:phonetest){
+//            System.out.println(p.getType()+": "+p.getNumber());
+//        }
+
         return "contact/index";
     }
     @RequestMapping("contact/import-contact")

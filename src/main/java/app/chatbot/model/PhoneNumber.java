@@ -23,10 +23,10 @@ public class PhoneNumber {
         this.extension = extension;
     }
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(
-            name = "uuid",
-            strategy = "uuid")
+            name = "system-uuid",
+            strategy = "uuid2")
     @Column(name="id")
     private String id;
     @Column(name="contact_id")
