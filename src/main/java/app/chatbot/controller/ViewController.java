@@ -151,6 +151,8 @@ public class ViewController {
     @RequestMapping("contact/edit/{id}")
     public String editContact(Model model, @PathVariable(value="id") String id) throws Exception{
         model.addAttribute("contact", contactRepository.findOne(id));
+//        model.addAttribute("mobile", phoneNumberRepository.findFirstByContactIdAndType(id, "home").get(0).getNumber());
+        System.out.println(phoneNumberRepository.findFirstByContactIdAndType(id, "home").get(0).getNumber());
         return "contact/edit";
     }
     @RequestMapping(value = "contact/update", method = RequestMethod.POST)
@@ -160,6 +162,7 @@ public class ViewController {
     }
     @RequestMapping(value = "contact/delete/{id}")
     public String deleteContact(@PathVariable(value="id") String id) {
+        phoneNumberRepository.delete(contactRepository.findOne(id).getPhoneNumber());
         contactRepository.delete(id);
         return "redirect:/contact";
     }
