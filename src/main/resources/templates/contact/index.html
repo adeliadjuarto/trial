@@ -22,6 +22,7 @@
                 <th>Region ID</th>
                 <th>CEK</th>
                 <th>Birthdate</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -44,6 +45,10 @@
                 <td th:text="${employee.regionId}"></td>
                 <td th:text="${employee.cek}"></td>
                 <td th:text="${employee.birthdate}"></td>
+                <td>
+                    <a th:href="@{/contact/edit/{id}(id=${employee.id})}">Edit</a>
+                    <a th:href="@{/contact/delete/{id}(id=${employee.id})}">Delete</a>
+                </td>
             </tr>
         </tbody>
     </table>

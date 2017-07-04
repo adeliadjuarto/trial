@@ -23,8 +23,10 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParsePosition;
 import java.util.Date;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by adeliadjuarto on 6/16/17.
@@ -125,11 +127,15 @@ public class ViewController {
     @RequestMapping("contact/create")
     public String createContact(Model model) throws Exception{
         model.addAttribute("contact", new Contact());
-//        model.addAttribute("contact", new Contact("", new Date(),"","", "","", "", "", "", "", new Date()));
         return "contact/create";
     }
     @RequestMapping(value = "contact/add", method = RequestMethod.POST)
-    public String addContact(@ModelAttribute Contact contact) {
+    public String addContact(@ModelAttribute Contact contact, @RequestParam("birthDate") String birthDate) {
+//        System.out.println(new Date());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        ParsePosition parsePosition = new ParsePosition(0);
+        Date parsedBirthdate = dateFormat.parse(birthDate, parsePosition);
+        contact.setBirthdate(parsedBirthdate);
         contactRepository.save(contact);
         return "redirect:/contact";
     }
@@ -148,8 +154,8 @@ public class ViewController {
         contactRepository.delete(id);
         return "redirect:/contact";
     }
-    @RequestMapping(value = "/save-excel-employee", method = RequestMethod.POST)
-    public String saveExcelEmployee(@RequestParam("file") MultipartFile file) throws Exception{
+    @RequestMapping(value = "/save-excel-contact", method = RequestMethod.POST)
+    public String saveExcelContact(@RequestParam("file") MultipartFile file) throws Exception{
         try {
             // Get the file and save it somewhere
             byte[] bytes = file.getBytes();
@@ -159,11 +165,11 @@ public class ViewController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        System.out.println("masuk kesini");
         // clean table
-        contactRepository.deleteAll();
         phoneNumberRepository.deleteAll();
-
+        contactRepository.deleteAll();
+        System.out.println("masuk setelah clean table");
         // insert data
         InputStream in = new FileSystemResource(directoryPath + file.getOriginalFilename()).getInputStream();
         String sheetName = "Employee List";
@@ -177,11 +183,11 @@ public class ViewController {
             if(i.getEmployeeName() != null){
                 Contact contact = new Contact(i.getStsrc(), i.getDateChange(), i.getEmployeeId(), i.getNIP(), i.getEmployeeName(), i.getBranchID(), i.getDivisionID(), i.getRegionID(), i.getJobTitleID(), i.getCEK(), i.getBirthDate());
                 contact = contactRepository.save(contact);
-                phoneNumber = new PhoneNumber(contact.getId(), "home", i.getHomeTelp(), null);
+                phoneNumber = new PhoneNumber(contact.getId(), "home", i.getHomeTelp(), null, "home");
                 phoneNumberRepository.save(phoneNumber);
-                phoneNumber = new PhoneNumber(contact.getId(), "handphone", i.getHandphoneTelp(), null);
+                phoneNumber = new PhoneNumber(contact.getId(), "handphone", i.getHandphoneTelp(), null, "mobile");
                 phoneNumberRepository.save(phoneNumber);
-                phoneNumber = new PhoneNumber(contact.getId(), "office", i.getOfficeTelp(), i.getOfficeExt());
+                phoneNumber = new PhoneNumber(contact.getId(), "office", i.getOfficeTelp(), i.getOfficeExt(), "building");
                 phoneNumberRepository.save(phoneNumber);
             }
         }

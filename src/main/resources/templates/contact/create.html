@@ -17,9 +17,9 @@
         <div>
             Stsrc: <input type="text" th:field="*{stsrc}" />
         </div>
-        <!--<div>-->
-            <!--Date Change: <input type="text" th:field="*{dateChange}"/>-->
-        <!--</div>-->
+        <div>
+            Date Change: <input type="text" id="dateChange" name="dateChange"/>
+        </div>
         <div>
             Employee ID: <input type="text" th:field="*{employeeId}" />
         </div>
@@ -35,13 +35,19 @@
         <div>
             CEK: <input type="text" th:field="*{cek}" />
         </div>
-        <!--<div>-->
-            <!--Birthdate: <input type="text" th:field="*{birthdate}"/>-->
-        <!--</div>-->
+        <div>
+            Birthdate: <input type="text" id="birthDate" name="birthDate"/>
+        </div>
         <div>
             <input type="submit" value="Submit" />
         </div>
     </form>
+    <script>
+        $( function() {
+            $( "#dateChange" ).datepicker({ dateFormat: 'yy-mm-dd' });
+            $( "#birthDate" ).datepicker({ dateFormat: 'yy-mm-dd' });
+        } );
+    </script>
 </div>
 </body>
 </html>

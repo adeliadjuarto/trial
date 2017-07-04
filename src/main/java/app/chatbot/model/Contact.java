@@ -61,6 +61,6 @@ public class Contact {
     @Column(name="birthdate")
     private Date birthdate;
     @OneToMany
-    @JoinColumn(name = "contact_id")
+    @JoinColumn(name = "contact_id", nullable = true)
     private List<PhoneNumber> phoneNumber;
 }

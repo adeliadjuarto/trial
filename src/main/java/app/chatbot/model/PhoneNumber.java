@@ -16,11 +16,12 @@ import java.util.UUID;
 @Getter
 public class PhoneNumber {
     protected PhoneNumber () {}
-    public PhoneNumber (String contactId, String type, String number, String extension) {
+    public PhoneNumber (String contactId, String type, String number, String extension, String icon) {
         this.contactId = contactId;
         this.type = type;
         this.number = number;
         this.extension = extension;
+        this.icon = icon;
     }
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -37,6 +38,7 @@ public class PhoneNumber {
     private String number;
     @Column(name="extension")
     private String extension;
-
+    @Column(name="icon")
+    private String icon;
 
 }
