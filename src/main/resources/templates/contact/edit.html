@@ -34,24 +34,29 @@
             CEK: <input type="text" th:field="*{cek}" />
         </div>
         <div>
-            Birthdate: <input type="text" th:field="*{birthdate}" />
+            Birthdate: <input type="text" id="birthDate" name="birthDate" />
         </div>
         <div>
-            Mobile: <input type="text" name="mobile"/>
+            Mobile: <input type="text" name="mobile" th:value="${mobile}"/>
         </div>
         <div>
-            Home: <input type="text" name="home" value=""/>
+            Home: <input type="text" name="home" th:value="${home}"/>
         </div>
         <div>
-            Office: <input type="text" name="office" value=""/>
+            Office: <input type="text" name="office" th:value="${office}"/>
         </div>
         <div>
-            Office ext: <input type="text" name="officeExt" value=""/>
+            Office ext: <input type="text" name="officeExt" th:value="${officeExt}"/>
         </div>
         <div>
             <input type="submit" value="Submit" />
         </div>
     </form>
+    <script>
+        $( function() {
+            $( "#birthDate" ).datepicker({ dateFormat: 'yy-mm-dd' });
+        } );
+    </script>
 </div>
 </body>
 </html>
