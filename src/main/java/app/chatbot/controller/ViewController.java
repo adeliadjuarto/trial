@@ -130,13 +130,22 @@ public class ViewController {
         return "contact/create";
     }
     @RequestMapping(value = "contact/add", method = RequestMethod.POST)
-    public String addContact(@ModelAttribute Contact contact, @RequestParam("birthDate") String birthDate) {
-//        System.out.println(new Date());
+    public String addContact(@ModelAttribute Contact contact, @RequestParam("birthDate") String birthDate, @RequestParam("mobile") String mobile, @RequestParam("home") String home, @RequestParam("office") String office, @RequestParam("officeExt") String officeExt) {
+        System.out.println("mobile: "+ mobile+",home: "+home+",office: "+office+",ext: "+officeExt);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         ParsePosition parsePosition = new ParsePosition(0);
         Date parsedBirthdate = dateFormat.parse(birthDate, parsePosition);
         contact.setBirthdate(parsedBirthdate);
-        contactRepository.save(contact);
+        contact.setDateChange(new Date());
+        Contact c = contactRepository.save(contact);
+        PhoneNumber phoneNumber;
+        phoneNumber = new PhoneNumber(c.getId(), "home", home, null, "home");
+        phoneNumberRepository.save(phoneNumber);
+        phoneNumber = new PhoneNumber(c.getId(), "handphone", mobile, null, "mobile");
+        phoneNumberRepository.save(phoneNumber);
+        phoneNumber = new PhoneNumber(c.getId(), "office", office, officeExt, "building");
+        phoneNumberRepository.save(phoneNumber);
+
         return "redirect:/contact";
     }
     @RequestMapping("contact/edit/{id}")
@@ -169,7 +178,6 @@ public class ViewController {
         // clean table
         phoneNumberRepository.deleteAll();
         contactRepository.deleteAll();
-        System.out.println("masuk setelah clean table");
         // insert data
         InputStream in = new FileSystemResource(directoryPath + file.getOriginalFilename()).getInputStream();
         String sheetName = "Employee List";
