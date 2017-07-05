@@ -30,9 +30,9 @@
                 <td th:text="${provider.address}"></td>
                 <td th:text="${provider.telephone}"></td>
                 <td th:text="${provider.fax}"></td>
-                <td th:text="${provider.providerTypeId}"></td>
-                <td th:text="${provider.serviceTypeId}"></td>
-                <td th:text="${provider.insuranceTypeId}"></td>
+                <td th:text="${provider.providerType.name}"></td>
+                <td th:text="${provider.serviceType.name}"></td>
+                <td th:text="${provider.insuranceType.name}"></td>
                 <td>
                     <a th:href="@{/provider/edit/{id}(id=${provider.id})}">Edit</a>
                     <a th:href="@{/provider/delete/{id}(id=${provider.id})}">Delete</a>

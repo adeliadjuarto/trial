@@ -4,8 +4,10 @@ import app.chatbot.model.Doctor;
 import app.chatbot.model.Hospital;
 import app.chatbot.model.Provider;
 import app.chatbot.model.ProviderType;
+import app.chatbot.repository.InsuranceTypeRepository;
 import app.chatbot.repository.ProviderRepository;
 import app.chatbot.repository.ProviderTypeRepository;
+import app.chatbot.repository.ServiceTypeRepository;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.javafunk.excelparser.SheetParser;
@@ -35,6 +37,10 @@ public class ProviderController {
     private ProviderRepository providerRepository;
     @Autowired
     private ProviderTypeRepository providerTypeRepository;
+    @Autowired
+    private ServiceTypeRepository serviceTypeRepository;
+    @Autowired
+    private InsuranceTypeRepository insuranceTypeRepository;
 
     @RequestMapping("/provider")
     public String provider(Model model) throws Exception{
@@ -78,7 +84,7 @@ public class ProviderController {
 
         for(Hospital i: carRawatInapLists) {
             if(i.getProvider() != null){
-                Provider provider = new Provider(i.getCity(), i.getProvider(), i.getBpjs(), i.getAddress(), i.getTelephone(), i.getFax(), 1, 1, 1);
+                Provider provider = new Provider(i.getCity(), i.getProvider(), i.getBpjs(), i.getAddress(), i.getTelephone(), i.getFax(), providerTypeRepository.findOne(1), serviceTypeRepository.findOne(1), insuranceTypeRepository.findOne(1));
                 providerRepository.save(provider);
             }
         }
@@ -98,7 +104,7 @@ public class ProviderController {
                 if(providerType == null){
                     providerType = providerTypeRepository.save(new ProviderType(i.getType()));
                 }
-                Provider provider = new Provider(i.getCity(), i.getName(), "", i.getAddress(), i.getTelephone(), "", providerType.getId(), 2, 1);
+                Provider provider = new Provider(i.getCity(), i.getName(), "", i.getAddress(), i.getTelephone(), "", providerType, serviceTypeRepository.findOne(2), insuranceTypeRepository.findOne(1));
                 providerRepository.save(provider);
             }
         }
@@ -118,7 +124,7 @@ public class ProviderController {
                 if(providerType == null){
                     providerType = providerTypeRepository.save(new ProviderType(i.getType()));
                 }
-                Provider provider = new Provider(i.getCity(), i.getName(), "", i.getAddress(), i.getTelephone(), "", providerType.getId(), 3, 1);
+                Provider provider = new Provider(i.getCity(), i.getName(), "", i.getAddress(), i.getTelephone(), "", providerType, serviceTypeRepository.findOne(3), insuranceTypeRepository.findOne(1));
                 providerRepository.save(provider);
             }
         }
@@ -135,7 +141,7 @@ public class ProviderController {
 
         for(Hospital i: tmcRawatInapLists) {
             if(i.getProvider() != null){
-                Provider provider = new Provider(i.getCity(), i.getProvider(), i.getBpjs(), i.getAddress(), i.getTelephone(), i.getFax(), 1, 1, 2);
+                Provider provider = new Provider(i.getCity(), i.getProvider(), i.getBpjs(), i.getAddress(), i.getTelephone(), i.getFax(), providerTypeRepository.findOne(1), serviceTypeRepository.findOne(1), insuranceTypeRepository.findOne(2));
                 providerRepository.save(provider);
             }
         }
@@ -155,7 +161,7 @@ public class ProviderController {
                 if(providerType == null){
                     providerType = providerTypeRepository.save(new ProviderType(i.getType()));
                 }
-                Provider provider = new Provider(i.getCity(), i.getName(), "", i.getAddress(), i.getTelephone(), "", providerType.getId(), 2, 2);
+                Provider provider = new Provider(i.getCity(), i.getName(), "", i.getAddress(), i.getTelephone(), "", providerType, serviceTypeRepository.findOne(2), insuranceTypeRepository.findOne(2));
                 providerRepository.save(provider);
             }
         }
@@ -175,7 +181,7 @@ public class ProviderController {
                 if(providerType == null){
                     providerType = providerTypeRepository.save(new ProviderType(i.getType()));
                 }
-                Provider provider = new Provider(i.getCity(), i.getName(), "", i.getAddress(), i.getTelephone(), "", providerType.getId(), 3, 2);
+                Provider provider = new Provider(i.getCity(), i.getName(), "", i.getAddress(), i.getTelephone(), "", providerType, serviceTypeRepository.findOne(3), insuranceTypeRepository.findOne(2));
                 providerRepository.save(provider);
             }
         }
@@ -192,7 +198,7 @@ public class ProviderController {
 
         for(Hospital i: chubbRawatInapLists) {
             if(i.getProvider() != null){
-                Provider provider = new Provider(i.getCity(), i.getProvider(), i.getBpjs(), i.getAddress(), i.getTelephone(), i.getFax(), 1, 1, 3);
+                Provider provider = new Provider(i.getCity(), i.getProvider(), i.getBpjs(), i.getAddress(), i.getTelephone(), i.getFax(), providerTypeRepository.findOne(1), serviceTypeRepository.findOne(1), insuranceTypeRepository.findOne(3));
                 providerRepository.save(provider);
             }
         }
@@ -212,7 +218,7 @@ public class ProviderController {
                 if(providerType == null){
                     providerType = providerTypeRepository.save(new ProviderType(i.getType()));
                 }
-                Provider provider = new Provider(i.getCity(), i.getName(), "", i.getAddress(), i.getTelephone(), "", providerType.getId(), 2, 3);
+                Provider provider = new Provider(i.getCity(), i.getName(), "", i.getAddress(), i.getTelephone(), "", providerType, serviceTypeRepository.findOne(2), insuranceTypeRepository.findOne(3));
                 providerRepository.save(provider);
             }
         }
@@ -232,7 +238,7 @@ public class ProviderController {
                 if(providerType == null){
                     providerType = providerTypeRepository.save(new ProviderType(i.getType()));
                 }
-                Provider provider = new Provider(i.getCity(), i.getName(), "", i.getAddress(), i.getTelephone(), "", providerType.getId(), 3, 3);
+                Provider provider = new Provider(i.getCity(), i.getName(), "", i.getAddress(), i.getTelephone(), "", providerType, serviceTypeRepository.findOne(2), insuranceTypeRepository.findOne(3));
                 providerRepository.save(provider);
             }
         }

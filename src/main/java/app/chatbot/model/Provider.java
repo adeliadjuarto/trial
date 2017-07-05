@@ -17,16 +17,16 @@ import javax.persistence.*;
 @Getter
 public class Provider {
     public Provider(){}
-    public Provider(String city, String name, String bpjs, String address, String telephone, String fax, Integer providerTypeId, Integer serviceTypeId, Integer insuranceTypeId){
+    public Provider(String city, String name, String bpjs, String address, String telephone, String fax, ProviderType providerType, ServiceType serviceType, InsuranceType insuranceType){
         this.city = city;
         this.name = name;
         this.bpjs = bpjs;
         this.address = address;
         this.telephone = telephone;
         this.fax = fax;
-        this.providerTypeId = providerTypeId;
-        this.serviceTypeId = serviceTypeId;
-        this.insuranceTypeId = insuranceTypeId;
+        this.providerType = providerType;
+        this.serviceType = serviceType;
+        this.insuranceType = insuranceType;
     }
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -37,10 +37,13 @@ public class Provider {
     private String address;
     private String telephone;
     private String fax;
-    @Column(name = "provider_type_id")
-    private Integer providerTypeId;
-    @Column(name = "service_type_id")
-    private Integer serviceTypeId;
-    @Column(name = "insurance_type_id")
-    private Integer insuranceTypeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "provider_type_id", referencedColumnName = "id")
+    private ProviderType providerType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "service_type_id", referencedColumnName = "id")
+    private ServiceType serviceType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "insurance_type_id", referencedColumnName = "id")
+    private InsuranceType insuranceType;
 }
