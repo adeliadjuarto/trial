@@ -35,17 +35,21 @@
         <div>
             Birthdate: <input type="text" id="birthDate" name="birthDate"/>
         </div>
-        <div>
-            Mobile: <input type="text" name="mobile"/>
+
+        <div id="addMobile" class="btn btn-primary">Add Mobile Number</div>
+        <div id="mobileField">
+            <div>Mobile: <input type="text" name="mobile[]"/> <button class="btn btn-danger x-btn">x</button></div>
         </div>
-        <div>
-            Home: <input type="text" name="home"/>
+        <div id="addHome" class="btn btn-primary">Add Home Number</div>
+        <div id="homeField">
+           <div>Home: <input type="text" name="home[]"/> <button class="btn btn-danger x-btn">x</button></div>
         </div>
-        <div>
-            Office: <input type="text" name="office"/>
-        </div>
-        <div>
-            Office ext: <input type="text" name="officeExt"/>
+        <div id="addOffice" class="btn btn-primary">Add Office Number</div>
+        <div id="officeField">
+            <div>
+                Office: <input type="text" name="office[]"/> <button class="btn btn-danger x-btn">x</button><br>
+                Office ext: <input type="text" name="officeExt[]"/>
+            </div>
         </div>
         <div>
             <input type="submit" value="Submit" />
@@ -55,6 +59,24 @@
         $( function() {
             $( "#dateChange" ).datepicker({ dateFormat: 'yy-mm-dd' });
             $( "#birthDate" ).datepicker({ dateFormat: 'yy-mm-dd' });
+            $("#addMobile").click(function(){
+                $("#mobileField").append("<div>Mobile: <input type='text' name='mobile[]'/> <button class='btn btn-danger x-btn'>x</button></div>");
+            });
+            $("#addHome").click(function(){
+                $("#homeField").append("<div>Home: <input type='text' name='home[]'/> <button class='btn btn-danger x-btn'>x</button></div>");
+            });
+            $("#addOffice").click(function(){
+                $("#officeField").append("<div>Office: <input type='text' name='office[]'/> <button class='btn btn-danger x-btn'>x</button><br>Office ext: <input type='text' name='officeExt[]'/></div>");
+            });
+            $("#mobileField").on("click", ".x-btn", function() {
+                $(this).parent().remove();
+            });
+            $("#homeField").on("click", ".x-btn", function() {
+                $(this).parent().remove();
+            });
+            $("#officeField").on("click", ".x-btn", function() {
+                $(this).parent().remove();
+            });
         } );
     </script>
 </div>
