@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<body>
+<div layout:fragment="body">
+    <form action="#" th:action="@{/insurance-type/add}" th:object="${insuranceType}" method="post">
+        <div>
+            Name: <input type="text" th:field="*{name}" />
+        </div>
+        <div>
+            <input type="submit" value="Submit" />
+        </div>
+    </form>
+</div>
+</body>
+</html>

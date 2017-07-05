@@ -24,15 +24,18 @@
         </thead>
         <tbody>
             <tr th:each="provider : ${providers}">
-                <td th:text="${hospital.city}"></td>
-                <td th:text="${hospital.provider}"></td>
-                <td th:text="${hospital.bpjs}"></td>
-                <td th:text="${hospital.address}"></td>
-                <td th:text="${hospital.telephone}"></td>
-                <td th:text="${hospital.fax}"></td>
+                <td th:text="${provider.city}"></td>
+                <td th:text="${provider.name}"></td>
+                <td th:text="${provider.bpjs}"></td>
+                <td th:text="${provider.address}"></td>
+                <td th:text="${provider.telephone}"></td>
+                <td th:text="${provider.fax}"></td>
+                <td th:text="${provider.providerTypeId}"></td>
+                <td th:text="${provider.serviceTypeId}"></td>
+                <td th:text="${provider.insuranceTypeId}"></td>
                 <td>
-                    <a th:href="@{/hospital/edit/{id}(id=${hospital.id})}">Edit</a>
-                    <a th:href="@{/hospital/delete/{id}(id=${hospital.id})}">Delete</a>
+                    <a th:href="@{/provider/edit/{id}(id=${provider.id})}">Edit</a>
+                    <a th:href="@{/provider/delete/{id}(id=${provider.id})}">Delete</a>
                 </td>
             </tr>
         </tbody>
