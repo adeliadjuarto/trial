@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<body>
+<div layout:fragment="body">
+    <form action="#" th:action="@{/hospital/add}" th:object="${hospital}" method="post">
+        <div>
+            City: <input type="text" th:field="*{city}" />
+        </div>
+        <div>
+            Provider: <input type="text" th:field="*{provider}" />
+        </div>
+        <div>
+            BPJS: <input type="text" th:field="*{bpjs}" />
+        </div>
+        <div>
+            Address: <input type="text" th:field="*{address}" />
+        </div>
+        <div>
+            Telephone: <input type="text" th:field="*{telephone}" />
+        </div>
+        <div>
+            Fax: <input type="text" th:field="*{fax}" />
+        </div>
+        <div>
+            <input type="submit" value="Submit" />
+        </div>
+    </form>
+</div>
+</body>
+</html>
