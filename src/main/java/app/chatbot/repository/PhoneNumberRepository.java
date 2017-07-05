@@ -7,5 +7,5 @@ import java.util.List;
  * Created by adeliadjuarto on 6/19/17.
  */
 public interface PhoneNumberRepository extends JpaRepository<PhoneNumber, String> {
-    public List<PhoneNumber> findFirstByContactIdAndType(String contact_id, String type);
+    public List<PhoneNumber> findByContactIdAndType(String contact_id, String type);
 }

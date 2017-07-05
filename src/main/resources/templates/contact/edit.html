@@ -34,19 +34,23 @@
             CEK: <input type="text" th:field="*{cek}" />
         </div>
         <div>
-            Birthdate: <input type="text" id="birthDate" name="birthDate" />
+            Birthdate: <input type="text" id="birthDate" name="birthDate" th:value="${contact.birthdate}"/>
         </div>
-        <div>
-            Mobile: <input type="text" name="mobile" th:value="${mobile}"/>
+        <div id="addMobile" class="btn btn-primary">Add Mobile Number</div>
+        <div id="mobileField">
+            <div th:each="n : ${mobile}">Mobile: <input type="text" name="mobile[]" th:value="${n.number}"/> <button class="btn btn-danger x-btn">x</button></div>
         </div>
-        <div>
-            Home: <input type="text" name="home" th:value="${home}"/>
+        <div id="addHome" class="btn btn-primary">Add Home Number</div>
+        <div id="homeField">
+            <div th:each="n : ${home}">Home: <input type="text" name="home[]" th:value="${n.number}"/> <button class="btn btn-danger x-btn">x</button></div>
         </div>
-        <div>
-            Office: <input type="text" name="office" th:value="${office}"/>
-        </div>
-        <div>
-            Office ext: <input type="text" name="officeExt" th:value="${officeExt}"/>
+        <div id="addOffice" class="btn btn-primary">Add Office Number</div>
+        <div id="officeField">
+
+            <div th:each="n : ${office}">
+                Office: <input type="text" name="office[]" th:value="${n.number}"/> <button class="btn btn-danger x-btn">x</button><br>
+                Office ext: <input type="text" name="officeExt[]" th:value="${n.extension}"/>
+            </div>
         </div>
         <div>
             <input type="submit" value="Submit" />
@@ -55,6 +59,24 @@
     <script>
         $( function() {
             $( "#birthDate" ).datepicker({ dateFormat: 'yy-mm-dd' });
+            $("#addMobile").click(function(){
+                $("#mobileField").append("<div>Mobile: <input type='text' name='mobile[]'/> <button class='btn btn-danger x-btn'>x</button></div>");
+            });
+            $("#addHome").click(function(){
+                $("#homeField").append("<div>Home: <input type='text' name='home[]'/> <button class='btn btn-danger x-btn'>x</button></div>");
+            });
+            $("#addOffice").click(function(){
+                $("#officeField").append("<div>Office: <input type='text' name='office[]'/> <button class='btn btn-danger x-btn'>x</button><br>Office ext: <input type='text' name='officeExt[]'/></div>");
+            });
+            $("#mobileField").on("click", ".x-btn", function() {
+                $(this).parent().remove();
+            });
+            $("#homeField").on("click", ".x-btn", function() {
+                $(this).parent().remove();
+            });
+            $("#officeField").on("click", ".x-btn", function() {
+                $(this).parent().remove();
+            });
         } );
     </script>
 </div>

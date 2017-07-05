@@ -137,7 +137,7 @@ public class ViewController {
         contact.setBirthdate(parsedBirthdate);
         contact.setDateChange(new Date());
         Contact c = contactRepository.save(contact);
-        
+
         PhoneNumber phoneNumber;
         for(int i=0;i<home.length;i++){
             phoneNumber = new PhoneNumber(c.getId(), "home", home[i], null, "home");
@@ -157,14 +157,18 @@ public class ViewController {
     @RequestMapping("contact/edit/{id}")
     public String editContact(Model model, @PathVariable(value="id") String id) throws Exception{
         model.addAttribute("contact", contactRepository.findOne(id));
-        model.addAttribute("home", phoneNumberRepository.findFirstByContactIdAndType(id, "home").get(0).getNumber());
-        model.addAttribute("mobile", phoneNumberRepository.findFirstByContactIdAndType(id, "handphone").get(0).getNumber());
-        model.addAttribute("office", phoneNumberRepository.findFirstByContactIdAndType(id, "office").get(0).getNumber());
-        model.addAttribute("officeExt", phoneNumberRepository.findFirstByContactIdAndType(id, "office").get(0).getExtension());
+        model.addAttribute("home", phoneNumberRepository.findByContactIdAndType(id, "home"));
+        model.addAttribute("mobile", phoneNumberRepository.findByContactIdAndType(id, "handphone"));
+        model.addAttribute("office", phoneNumberRepository.findByContactIdAndType(id, "office"));
+        List<PhoneNumber> phoneNumbers = phoneNumberRepository.findByContactIdAndType(id, "home");
+        for(int i=0;i<phoneNumbers.size();i++){
+            System.out.println(phoneNumbers.get(i).getNumber());
+        }
+
         return "contact/edit";
     }
     @RequestMapping(value = "contact/update", method = RequestMethod.POST)
-    public String updateContact(@ModelAttribute Contact contact, @RequestParam("birthDate") String birthDate, @RequestParam("mobile") String mobile, @RequestParam("home") String home, @RequestParam("office") String office, @RequestParam("officeExt") String officeExt) {
+    public String updateContact(@ModelAttribute Contact contact, @RequestParam("birthDate") String birthDate, @RequestParam("mobile[]") String[] mobile, @RequestParam("home[]") String[] home, @RequestParam("office[]") String[] office, @RequestParam("officeExt[]") String[] officeExt) {
         phoneNumberRepository.delete(contactRepository.findOne(contact.getId()).getPhoneNumber());
         contactRepository.delete(contact);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -174,12 +178,18 @@ public class ViewController {
         contact.setDateChange(new Date());
         Contact c = contactRepository.save(contact);
         PhoneNumber phoneNumber;
-        phoneNumber = new PhoneNumber(c.getId(), "home", home, null, "home");
-        phoneNumberRepository.save(phoneNumber);
-        phoneNumber = new PhoneNumber(c.getId(), "handphone", mobile, null, "mobile");
-        phoneNumberRepository.save(phoneNumber);
-        phoneNumber = new PhoneNumber(c.getId(), "office", office, officeExt, "building");
-        phoneNumberRepository.save(phoneNumber);
+        for(int i=0;i<home.length;i++){
+            phoneNumber = new PhoneNumber(c.getId(), "home", home[i], null, "home");
+            phoneNumberRepository.save(phoneNumber);
+        }
+        for(int i=0;i<mobile.length;i++){
+            phoneNumber = new PhoneNumber(c.getId(), "handphone", mobile[i], null, "mobile");
+            phoneNumberRepository.save(phoneNumber);
+        }
+        for(int i=0;i<office.length;i++){
+            phoneNumber = new PhoneNumber(c.getId(), "office", office[i], officeExt[i], "building");
+            phoneNumberRepository.save(phoneNumber);
+        }
         return "redirect:/contact";
     }
     @RequestMapping(value = "contact/delete/{id}")
